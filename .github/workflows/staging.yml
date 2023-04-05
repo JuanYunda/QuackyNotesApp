@@ -200,8 +200,8 @@ jobs:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: build/.
-        target: /home/ubuntu/build   
+        source: build/
+        target: /home/ubuntu/   
     
     # ======================================================
     # Once we have the new files synced to the staging server
