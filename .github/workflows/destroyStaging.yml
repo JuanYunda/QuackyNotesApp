@@ -9,7 +9,7 @@ on:
 
 jobs:
   create:
-    name: 'Create staging and deploy'
+    name: 'Delete Staging and undeploy'
     defaults:
       run:
         shell: bash
@@ -142,7 +142,7 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
           const output = `#### Staging server deleted
-          > PR #${{ github.event.inputs.PR_number }} has been undeployed successfully;
+          > PR #${{ github.event.inputs.PR_number }} has been undeployed successfully`;
 
           github.rest.issues.createComment({
             issue_number: ${{ github.event.inputs.PR_number }},
