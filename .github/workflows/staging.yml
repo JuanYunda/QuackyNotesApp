@@ -52,7 +52,7 @@ jobs:
     # Checkout the infra repository
     # ======================================================
     - uses: actions/checkout@v2
-      name: 'Checkout repository and infra branch'
+      name: 'Checkout infrastructure repository'
       with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
         fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.      
