@@ -54,7 +54,7 @@ jobs:
     - uses: actions/checkout@v2
       name: 'Checkout repository and infra branch'
       with:
-        repository: https://github.com/AndresDavidArcos/QuackyNotesInfra.git
+        repository: AndresDavidArcos/QuackyNotesInfra
 
     # ======================================================
     # Terraform setup
