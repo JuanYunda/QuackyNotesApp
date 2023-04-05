@@ -178,7 +178,7 @@ jobs:
         git config --global user.name '${{ github.actor }}'
         git config --global user.email '${{ github.actor}}@users.noreply.github.com'
         git add ./\*.tf
-        git commit -m "Add terraform resource files"
+        git commit -m "Add terraform resource files" || echo "No changes to commit"
 
     - name: Push changes to the infra repo
       uses: ad-m/github-push-action@master
