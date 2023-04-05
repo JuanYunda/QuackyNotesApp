@@ -213,7 +213,12 @@ jobs:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |          
+        script: |
+          while ! command -v docker &> /dev/null
+          do
+            echo "Waiting for Docker to be installed..."
+            sleep 5
+          done                  
           sudo docker run -it -d \
           -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
           -v /home/ubuntu/build:/var/www/react-app/build \
