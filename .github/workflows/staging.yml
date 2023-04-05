@@ -172,13 +172,20 @@ jobs:
     # ======================================================
     - name: Commit terraform resource files to the PR
       working-directory: staging/
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}      
       run: |
         git config --global user.name '${{ github.actor }}'
         git config --global user.email '${{ github.actor}}@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.INFRA_TOKEN }}@github.com/AndresDavidArcos/QuackyNotesInfra.git
         git add ./\*.tf
-        git commit -m "Add terraform resource files" && \
-          git push || echo "Nothing to commit"
+        git commit -m "Add terraform resource files"
+
+    - name: Push changes to the infra repo
+      uses: ad-m/github-push-action@master
+      working-directory: staging/      
+      with:
+        github_token: ${{ secrets.INFRA_TOKEN }}
+        repository: AndresDavidArcos/QuackyNotesInfra
 
     # ======================================================
     # Checkout the PR branch so that we can deploy it
