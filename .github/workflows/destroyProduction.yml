@@ -1,0 +1,58 @@
+name: Destroy Production Environment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create:
+    name: 'Delete production and undeploy'
+    defaults:
+      run:
+        shell: bash
+    
+    runs-on: ubuntu-latest
+
+    steps:
+    # ======================================================
+    # Checkout the infra repository
+    # ======================================================
+    - uses: actions/checkout@v2
+      name: 'Checkout infrastructure repository'
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.      
+        repository: AndresDavidArcos/QuackyNotesInfra
+
+    # ======================================================
+    # Terraform setup
+    # 
+    # - secrets.TERRAFORM_API_TOKEN: is the Terraform
+    # Cloud API Token.
+    # ======================================================
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.11
+        cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+
+    - name: Terraform Init and Validate
+      id: init
+      working-directory: production/
+      run: |
+        terraform init
+        terraform validate -no-color
+          
+    - name: Terraform destroy
+      id: destroy
+      working-directory: production/
+      run: terraform destroy -target=aws_instance.production_quackynoteapp -auto-approve
+   
+    - name: Notification Slack
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: destroying-production
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: Anti-naughty-destroys
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_MESSAGE: "${{ github.actor }} have destroyed production"
+

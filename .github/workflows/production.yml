@@ -1,0 +1,164 @@
+name: Deploy to production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create:
+    name: 'Deploy to production'
+    defaults:
+      run:
+        shell: bash
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+
+    # ======================================================
+    # Checkout the infra repository
+    # ======================================================
+    - uses: actions/checkout@v2
+      name: 'Checkout infrastructure repository'
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.      
+        repository: AndresDavidArcos/QuackyNotesInfra
+
+    # ======================================================
+    # Terraform setup
+    # 
+    # - secrets.TERRAFORM_API_TOKEN: is the Terraform
+    # Cloud API Token.
+    # ======================================================
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.0.11
+        cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
+        
+    - name: Terraform Init and Validate
+      id: init
+      working-directory: production/
+      run: |
+        terraform init
+        terraform validate -no-color
+
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color
+      working-directory: production/
+      continue-on-error: true
+    
+    # ======================================================
+    # Once Terraform Plan is completed we need to update
+    # the commit with the results of the plan
+    # ======================================================
+    - name: Update commit
+      uses: actions/github-script@v5
+      env:
+        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+          #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+
+          <details><summary>Show Plan</summary>
+
+          \`\`\`\n
+          ${process.env.PLAN}
+          \`\`\`
+
+          </details>
+
+          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
+
+          github.rest.issues.createComment({
+            commit_sha: ${{ github.sha }},
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
+          
+    - name: Terraform Plan Status
+      if: steps.plan.outcome == 'failure'
+      run: exit 1
+
+    - name: Terraform Apply
+      id: apply
+      working-directory: production/
+      run: terraform apply -auto-approve
+      
+    - name: Terraform Output
+      id: apply_output
+      working-directory: production/
+      run: terraform output -raw -no-color production_dns
+
+    # ======================================================
+    # Checkout the main branch so that we can deploy it
+    # ======================================================
+    - uses: actions/checkout@v2
+      name: 'Checkout main'
+      with:
+        ref: main
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build static files
+      run: npm run build
+
+    - name: Copy build files from PR branch to remote host
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: build/
+        target: /home/ubuntu/   
+    
+    # ======================================================
+    # Once we have the new files synced to the staging server
+    # we need to start the staging server in a docker container. 
+    # ======================================================
+    - name: Deploy docker container with nginx
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          while [ -z "$(sudo docker system info 2>/dev/null)" ]
+          do
+            echo "Waiting for Docker daemon to start..."
+            sleep 15
+          done               
+          echo "Docker daemon started. Waiting for additional 15 seconds..."
+          sleep 15
+          sudo docker run -it -d \
+          -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
+          -v /home/ubuntu/build:/var/www/react-app/build \
+          -p 80:80 \
+          --name quackynoteapp \
+          gomaperrona/react-nginx
+          sudo docker exec quackynoteapp service nginx start        
+    # ======================================================
+    # When we're done, we need to update the PR one more time
+    # with the results of the apply.
+    # ======================================================      
+    - name: Update status
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const output = `#### Production server deployed
+          > Production server with commit ${{ github.sha }} has been deployed successfully
+          
+          URL: http://${{ steps.apply_output.outputs.stdout }}`;
+
+          github.rest.issues.createComment({
+            commit_sha: ${{ github.sha }},
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: output
+          })
