@@ -214,11 +214,11 @@ jobs:
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          while ! docker system info &> /dev/null
+          while [ -z "$(sudo docker system info 2>/dev/null)" ]
           do
             echo "Waiting for Docker daemon to start..."
-            sleep 20
-          done                  
+            sleep 15
+          done               
           sudo docker run -it -d \
           -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
           -v /home/ubuntu/build:/var/www/react-app/build \
