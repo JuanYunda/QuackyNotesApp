@@ -213,13 +213,13 @@ jobs:
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |          
-      sudo docker run -it -d \
-        -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
-        -v /home/ubuntu/build:/var/www/react-app/build \
-        -p 80:80 \
-        --name quackynoteapp \
-        gomaperrona/react-nginx
-      sudo docker exec quackynoteapp service nginx start        
+          sudo docker run -it -d \
+          -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
+          -v /home/ubuntu/build:/var/www/react-app/build \
+          -p 80:80 \
+          --name quackynoteapp \
+          gomaperrona/react-nginx
+          sudo docker exec quackynoteapp service nginx start        
     # ======================================================
     # When we're done, we need to update the PR one more time
     # with the results of the apply.
