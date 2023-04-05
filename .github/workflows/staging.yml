@@ -219,9 +219,11 @@ jobs:
             echo "Waiting for Docker daemon to start..."
             sleep 15
           done               
+          echo "Docker daemon started. Waiting for additional 15 seconds..."
+          sleep 15
           sudo docker run -it -d \
-          -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
-          -v /home/ubuntu/build:/var/www/react-app/build \
+          -e STAGING_RESOURCE_NAME=ec2-35-174-137-164.compute-1.amazonaws.com \
+          -v /home/***/build:/var/www/react-app/build \
           -p 80:80 \
           --name quackynoteapp \
           gomaperrona/react-nginx
