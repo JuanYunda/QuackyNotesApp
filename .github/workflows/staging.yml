@@ -200,7 +200,7 @@ jobs:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: build/*
+        source: build/.
         target: /home/ubuntu/build   
     
     # ======================================================
@@ -214,10 +214,10 @@ jobs:
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
-          while ! command -v docker &> /dev/null
+          while ! docker system info &> /dev/null
           do
-            echo "Waiting for Docker to be installed..."
-            sleep 5
+            echo "Waiting for Docker daemon to start..."
+            sleep 20
           done                  
           sudo docker run -it -d \
           -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
