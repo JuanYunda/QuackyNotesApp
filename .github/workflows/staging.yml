@@ -182,7 +182,6 @@ jobs:
 
     - name: Push changes to the infra repo
       uses: ad-m/github-push-action@master
-      working-directory: staging/      
       with:
         github_token: ${{ secrets.INFRA_TOKEN }}
         repository: AndresDavidArcos/QuackyNotesInfra
