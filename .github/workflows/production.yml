@@ -57,14 +57,14 @@ jobs:
         SLACK_USERNAME: ¿This-plan-looks-good?
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_PLAN }}
         SLACK_MESSAGE: >
-          ${{ github.actor }} is planning something:
+          ${{ github.actor }} is planning something:\n
           #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
           
           <details><summary>Show Plan</summary>
 
           \`\`\`\n
-          ${process.env.PLAN}
+          ${{ steps.plan.outputs.stdout }}
           \`\`\`
           </details>
         
@@ -97,12 +97,12 @@ jobs:
     - name: Build static files
       run: npm run build
 
-    - name: Copy build files from PR branch to remote host
+    - name: Copy build files from main branch to remote host
       uses: appleboy/scp-action@master
       with:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
         source: build/
         target: /home/ubuntu/   
     
