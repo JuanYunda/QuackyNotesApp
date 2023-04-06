@@ -49,36 +49,22 @@ jobs:
       working-directory: production/
       continue-on-error: true
     
-    # ======================================================
-    # Once Terraform Plan is completed we need to update
-    # the commit with the results of the plan
-    # ======================================================
-    - name: Update commit
-      uses: actions/github-script@v5
+    - name: Notification Slack
+      uses: rtCamp/action-slack-notify@v2
       env:
-        PLAN: "terraform\n${{ steps.plan.outputs.stdout }}"
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `#### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+        SLACK_CHANNEL: planning-production
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: ¿This-plan-looks-good?
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_PLAN }}
+        SLACK_MESSAGE: "${{ github.actor }} is planning something:
+        #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
           <details><summary>Show Plan</summary>
 
           \`\`\`\n
           ${process.env.PLAN}
-          \`\`\`
-
-          </details>
-
-          *Pusher: @${{ github.actor }}, Action: \`${{ github.event_name }}\`*`;
-
-          github.rest.issues.createComment({
-            commit_sha: ${{ github.sha }},
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
+          \`\`\`"          
           
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
@@ -142,23 +128,20 @@ jobs:
           --name quackynoteapp \
           gomaperrona/react-nginx
           sudo docker exec quackynoteapp service nginx start        
-    # ======================================================
-    # When we're done, we need to update the PR one more time
-    # with the results of the apply.
-    # ======================================================      
-    - name: Update status
-      uses: actions/github-script@v5
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const output = `#### Production server deployed
-          > Production server with commit ${{ github.sha }} has been deployed successfully
-          
-          URL: http://${{ steps.apply_output.outputs.stdout }}`;
 
-          github.rest.issues.createComment({
-            commit_sha: ${{ github.sha }},
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: output
-          })
+    - name: Notification Slack
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: deploying-production
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: Production-Watcher
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_PRODUCTION }}
+        SLACK_MESSAGE: "${{ github.actor }} has deployed to production:
+        #### Production server deployed
+          
+          URL: http://${{ steps.apply_output.outputs.stdout }}"
+
+
+
+
+

@@ -54,5 +54,5 @@ jobs:
         SLACK_TITLE: Post Title
         SLACK_USERNAME: Anti-naughty-destroys
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-        SLACK_MESSAGE: "${{ github.actor }} have destroyed production"
+        SLACK_MESSAGE: "${{ github.actor }} has destroyed production"
 
