@@ -56,16 +56,18 @@ jobs:
         SLACK_TITLE: Post Title
         SLACK_USERNAME: ¿This-plan-looks-good?
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_PLAN }}
-        SLACK_MESSAGE: "${{ github.actor }} is planning something:
-        #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
+        SLACK_MESSAGE: >
+          ${{ github.actor }} is planning something:
+          #### Terraform Initialization ⚙️\`${{ steps.init.outcome }}\`
           #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
-
+          
           <details><summary>Show Plan</summary>
 
           \`\`\`\n
           ${process.env.PLAN}
           \`\`\`
-          </details>"          
+          </details>
+        
           
     - name: Terraform Plan Status
       if: steps.plan.outcome == 'failure'
@@ -137,10 +139,11 @@ jobs:
         SLACK_TITLE: Post Title
         SLACK_USERNAME: Production-Watcher
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL_PRODUCTION }}
-        SLACK_MESSAGE: "${{ github.actor }} has deployed to production:
-        #### Production server deployed
-          
-          URL: http://${{ steps.apply_output.outputs.stdout }}"
+        SLACK_MESSAGE: >
+          ${{ github.actor }} has deployed to production:
+          #### Production server deployed
+            
+            URL: http://${{ steps.apply_output.outputs.stdout }}
 
 
 
