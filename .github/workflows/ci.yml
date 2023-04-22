@@ -23,11 +23,11 @@ jobs:
         path: web
 
     - name: 'Install Dependencies'
-      working-directory: web/    
+      working-directory: web
       run: |
         ls
         npm install
     
     - name: 'Run Tests'
-      working-directory: web/    
+      working-directory: web
       run: npm run test
