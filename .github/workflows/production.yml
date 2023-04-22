@@ -98,6 +98,12 @@ jobs:
     - name: Build static files
       run: npm run build
 
+    - name: WATCHING Build static files
+      run: |
+      ls
+      cd build
+      ls
+
     - name: Copy build files from main branch to remote host
       uses: appleboy/scp-action@master
       with:
