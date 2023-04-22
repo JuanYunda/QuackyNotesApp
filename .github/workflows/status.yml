@@ -1,3 +1,0 @@
-require_status_checks:
-  contexts:
-  - Continuous Integration Workflow
