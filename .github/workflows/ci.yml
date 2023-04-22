@@ -20,11 +20,11 @@ jobs:
     - uses: actions/checkout@v2
       name: 'Checkout repository'
       with: 
-        path: web/
+        path: web
         fetch-depth: 0
 
     - name: 'Check directory'
-      run: ls web/        
+      run: ls      
 
     - name: 'Install Dependencies'
       run: npm install
