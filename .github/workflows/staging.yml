@@ -13,6 +13,7 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: ./web
     
     runs-on: ubuntu-latest
     
@@ -206,7 +207,7 @@ jobs:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: build/
+        source: web/build/
         target: /home/ubuntu/   
     
     # ======================================================
@@ -229,7 +230,7 @@ jobs:
           sleep 15
           sudo docker run -it -d \
           -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
-          -v /home/ubuntu/build:/var/www/react-app/build \
+          -v /home/ubuntu/web/build:/var/www/react-app/build \
           -p 80:80 \
           --name quackynoteapp \
           gomaperrona/react-nginx

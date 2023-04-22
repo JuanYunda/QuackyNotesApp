@@ -15,13 +15,18 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: ./web
+
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
       name: 'Checkout repository'
 
     - name: 'Install Dependencies'
-      run: npm install
+      run: |
+        ls
+        npm install
     
     - name: 'Run Tests'
       run: npm run test
