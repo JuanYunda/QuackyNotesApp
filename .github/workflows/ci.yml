@@ -19,6 +19,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       name: 'Checkout repository'
+      with: 
+        path: web
 
     - name: 'Install Dependencies'
       run: npm install
