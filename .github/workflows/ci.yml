@@ -21,6 +21,7 @@ jobs:
       name: 'Checkout repository'
       with: 
         path: web/
+        fetch-depth: 0
 
     - name: 'Check directory'
       run: ls web/        
