@@ -22,8 +22,8 @@ jobs:
       with: 
         path: web
 
-    - name: 'Check directory'
-      run: ls      
+    - name: 'Change to web directory'
+      run: cd web
 
     - name: 'Install Dependencies'
       run: npm install
