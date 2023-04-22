@@ -25,6 +25,9 @@ jobs:
     - name: 'Change to web directory'
       run: cd web
 
+    - name: 'debugging'
+      run: ls
+
     - name: 'Install Dependencies'
       run: npm install
     
