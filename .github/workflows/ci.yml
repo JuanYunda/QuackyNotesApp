@@ -22,14 +22,10 @@ jobs:
       with: 
         path: web
 
-    - name: 'Change to web directory'
-      run: cd web
-
-    - name: 'debugging'
-      run: ls
-
     - name: 'Install Dependencies'
+      working-directory: web/    
       run: npm install
     
     - name: 'Run Tests'
+      working-directory: web/    
       run: npm run test
