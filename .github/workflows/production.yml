@@ -98,18 +98,13 @@ jobs:
     - name: Build static files
       run: npm run build
 
-    - name: WATCHING Build static files
-      run: |
-        pwd
-        ls
-
     - name: Copy build files from main branch to remote host
       uses: appleboy/scp-action@master
       with:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
-        source: web/build/
+        source: ./build/
         target: /home/ubuntu/   
     
     # ======================================================
