@@ -100,8 +100,7 @@ jobs:
 
     - name: WATCHING Build static files
       run: |
-        ls
-        cd build
+        pwd
         ls
 
     - name: Copy build files from main branch to remote host
@@ -110,7 +109,7 @@ jobs:
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
         key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
-        source: build/
+        source: web/build/
         target: /home/ubuntu/   
     
     # ======================================================
