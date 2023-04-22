@@ -1,0 +1,5 @@
+# This is the CODEOWNERS file for this repository.
+# It lists the individuals or teams who are responsible for code review in the designated paths.
+
+# Directories and files with specific owners
+src/        @AndresDavidArcos @Mici7120
