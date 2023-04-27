@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import environ
 
 #env = environ.Env()
 #environ.Env.read_env()
@@ -42,12 +41,8 @@ PROJECT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'django_filters',
     'corsheaders',
-    'apps',
     'rest_framework',
-    'ckeditor',
-    'ckeditor_uploader'
 ]
 
 INSTALLED_APPS = DJANGO_APPS + PROJECT_APPS + THIRD_PARTY_APPS
