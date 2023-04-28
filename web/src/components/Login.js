@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [nombre, setNombre] = useState('');
-  const [apellidos, setApellidos] = useState('');
-  const [celular, setCelular] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const navigate = useNavigate()
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     
@@ -23,8 +23,13 @@ export default function Login() {
       });
       
       const data = await response.json();
-      console.log(data);
-      
+      if(response.status === 200){
+        console.log(data);
+        navigate('/notes')
+      }else{
+        console.error(data)
+      }
+
     } catch (error) {
       console.log(error);
     }
@@ -32,38 +37,12 @@ export default function Login() {
   
 
   return (
+    <>
     <form onSubmit={handleSubmit}>
       <label>
-        Nombre:
+        Usuario:
         <input
           type="text"
-          value={nombre}
-          onChange={(event) => setNombre(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Apellidos:
-        <input
-          type="text"
-          value={apellidos}
-          onChange={(event) => setApellidos(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Celular:
-        <input
-          type="text"
-          value={celular}
-          onChange={(event) => setCelular(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Correo electrónico:
-        <input
-          type="email"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
         />
@@ -78,7 +57,11 @@ export default function Login() {
         />
       </label>
       <br />
-      <button type="submit">Enviar</button>
+      <button type="submit">Iniciar sesión</button>
     </form>
+    <Link to="/register">Registrarse</Link>
+
+    
+    </>
   );
 }
