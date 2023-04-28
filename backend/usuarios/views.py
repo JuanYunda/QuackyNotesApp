@@ -28,5 +28,5 @@ class LoginView(APIView):
             raise AuthenticationFailed('Incorrect password!')
 
         return Response({
-            'message': 'SHIMBA'
+            'message': 'Usuario logeado correctamente'
         })

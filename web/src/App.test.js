@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import Notes from './components/Notes';
 
-describe("Pruebas de ejemplo", () => {
+describe("Pruebas con JEST", () => {
   test("renderiza 3 elementos de tipo li", ()=>{
-      render(<App/>);
+      render(<Notes/>);
       const elementosLi = screen.getAllByRole('listitem');
       expect(elementosLi.length).toBe(3);
   })
