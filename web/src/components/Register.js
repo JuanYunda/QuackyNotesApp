@@ -15,7 +15,7 @@ export default function Register() {
     event.preventDefault();
     
     try {
-      const response = await fetch(`http://quakynotes_backend:8000/api/register`, {
+      const response = await fetch(`http://localhost:8000/api/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
