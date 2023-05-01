@@ -203,31 +203,32 @@ jobs:
       run: npm run build
 
     - name: Copy build files from PR branch to remote host
-      uses: garygrossgarten/github-action-scp@release
+      uses: appleboy/scp-action@v0.14
       with:
-        local: web/build/
-        remote: /home/ubuntu/
+        source: web/build/
+        target: /home/ubuntu/
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}       
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Copy backend files from PR branch to remote host
-      uses: garygrossgarten/github-action-scp@release
+      uses: appleboy/scp-action@v0.1.4
       with:
-        local: backend
-        remote: /home/ubuntu/
+        source: backend
+        target: /home/ubuntu/
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}     
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+     
 
     - name: Copy docker-compose.yml file from PR branch to remote host
-      uses: garygrossgarten/github-action-scp@release
+      uses: appleboy/scp-action@v0.1.4
       with:
-        local: docker-compose.yml
-        remote: /home/ubuntu/
+        source: docker-compose.yml
+        target: /home/ubuntu/
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}                    
+        key: ${{ secrets.SSH_PRIVATE_KEY }}                
     
     # ======================================================
     # Once we have the new files synced to the staging server
