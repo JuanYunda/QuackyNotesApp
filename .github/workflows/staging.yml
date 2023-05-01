@@ -13,7 +13,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./web
     
     runs-on: ubuntu-latest
     
@@ -196,19 +195,30 @@ jobs:
         ref: ${{ steps.verify_pr_number.outputs.result }}
 
     - name: Install dependencies
+      working-directory: ./web
       run: npm install
 
     - name: Build static files
+      working-directory: ./web    
       run: npm run build
 
     - name: Copy build files from PR branch to remote host
-      uses: appleboy/scp-action@master
+      uses: garygrossgarten/github-action-scp@release
       with:
+        local: web/build/
+        remote: /home/ubuntu/
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: web/build/
-        target: /home/ubuntu/   
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}       
+
+    - name: Copy backend files from PR branch to remote host
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: backend
+        remote: /home/ubuntu/
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}              
     
     # ======================================================
     # Once we have the new files synced to the staging server
@@ -228,13 +238,8 @@ jobs:
           done               
           echo "Docker daemon started. Waiting for additional 15 seconds..."
           sleep 15
-          sudo docker run -it -d \
-          -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
-          -v /home/ubuntu/web/build:/var/www/react-app/build \
-          -p 80:80 \
-          --name quackynoteapp \
-          gomaperrona/react-nginx
-          sudo docker exec quackynoteapp service nginx start        
+          export STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }}
+          sudo docker-compose up -d --build    
     # ======================================================
     # When we're done, we need to update the PR one more time
     # with the results of the apply.
