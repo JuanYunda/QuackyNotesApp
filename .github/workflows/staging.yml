@@ -197,6 +197,10 @@ jobs:
     - name: Install dependencies
       working-directory: ./web
       run: npm install
+    
+      - name: Replace base URL in index.html
+        run: |
+          sed -i "s/Ec2DomainName/new_string/g" ./web/public/index.html
 
     - name: Build static files
       working-directory: ./web    
