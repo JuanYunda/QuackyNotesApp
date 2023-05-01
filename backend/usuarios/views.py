@@ -5,7 +5,6 @@ from .serializers import UserSerializer
 from .models import Usuarios
 
 
-# Create your views here.
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -16,10 +15,10 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        email = request.data['email']
+        username = request.data['username']
         password = request.data['password']
 
-        user = Usuarios.objects.filter(email=email).first()
+        user = Usuarios.objects.filter(username=username).first()
 
         if user is None:
             raise AuthenticationFailed('User not found!')
