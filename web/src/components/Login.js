@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -11,7 +12,7 @@ export default function Login() {
     event.preventDefault();
     
     try {
-      const response = await fetch('login', {
+      const response = await fetch(baseUrl+'login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
+  const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
   const [nombre, setNombre] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [celular, setCelular] = useState('');
@@ -15,7 +16,7 @@ export default function Register() {
     event.preventDefault();
     
     try {
-      const response = await fetch('register', {
+      const response = await fetch(baseUrl+'register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
