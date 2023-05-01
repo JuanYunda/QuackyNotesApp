@@ -218,7 +218,16 @@ jobs:
         remote: /home/ubuntu/
         host: ${{ steps.apply_output.outputs.stdout }}
         username: ${{ secrets.REMOTE_USER }}
-        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}              
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}     
+
+    - name: Copy docker-compose.yml file from PR branch to remote host
+      uses: garygrossgarten/github-action-scp@release
+      with:
+        local: docker-compose.yml
+        remote: /home/ubuntu/
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        privateKey: ${{ secrets.SSH_PRIVATE_KEY }}                    
     
     # ======================================================
     # Once we have the new files synced to the staging server
