@@ -203,7 +203,7 @@ jobs:
       run: npm run build
 
     - name: Copy build files from PR branch to remote host
-      uses: appleboy/scp-action@v0.14
+      uses: appleboy/scp-action@v0.1.4
       with:
         source: web/build/
         target: /home/ubuntu/
