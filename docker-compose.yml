@@ -1,0 +1,43 @@
+version: '3.9'
+
+services:
+  quakynotes_db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgresql
+      POSTGRES_DB: quakynotes_db
+    volumes:
+      - db-data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    restart: always
+    container_name: quakynotes_db
+
+  backend:
+    depends_on:
+      - quakynotes_db  
+    build: ./backend
+    environment:
+      DB_NAME: quakynotes_db
+      DB_USER: postgres
+      DB_PASSWORD: postgresql
+      DB_HOST: quakynotes_db
+    restart: always    
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+
+  frontend:
+    image: gomaperrona/react-nginx
+    environment:
+      STAGING_RESOURCE_NAME: $STAGING_RESOURCE_NAME
+    volumes:
+      - ./web/build:/var/www/react-app/build
+    ports:
+      - "80:80"
+    command: nginx -g 'daemon off;'
+    restart: always      
+
+volumes:
+  db-data:
