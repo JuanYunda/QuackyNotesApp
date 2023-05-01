@@ -11,7 +11,7 @@ export default function Login() {
     event.preventDefault();
     
     try {
-      const response = await fetch('http://localhost:8000/api/login', {
+      const response = await fetch(`http://${process.env.BACKEND_DOMAIN_NAME}:8000/api/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

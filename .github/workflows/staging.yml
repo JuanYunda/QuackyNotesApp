@@ -248,7 +248,7 @@ jobs:
           done               
           echo "Docker daemon started. Waiting for additional 15 seconds..."
           sleep 15
-          export STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }}
+          sudo sed -i "s/DNS/${{ steps.apply_output.outputs.stdout }}/g" docker-compose.yml
           sudo docker-compose up -d --build    
     # ======================================================
     # When we're done, we need to update the PR one more time
