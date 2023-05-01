@@ -5,7 +5,7 @@ function Notes() {
     <ul>
       <li>Nota 1</li>
       <li>Nota 2</li>
-      <li>Nota 4</li>
+      <li>Nota: ACTIONS ESTA FUNCIONANDO</li>
     </ul>
   );
 }
