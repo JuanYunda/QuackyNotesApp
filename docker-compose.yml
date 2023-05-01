@@ -32,7 +32,7 @@ services:
   frontend:
     image: gomaperrona/react-nginx
     environment:
-      STAGING_RESOURCE_NAME: 127.0.0.1
+      STAGING_RESOURCE_NAME: DNS
       BACKEND_DOMAIN_NAME: quakynotes_backend
     volumes:
       - ./web/build:/var/www/react-app/build
