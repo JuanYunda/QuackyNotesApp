@@ -33,7 +33,7 @@ services:
     environment:
       STAGING_RESOURCE_NAME: $STAGING_RESOURCE_NAME
     volumes:
-      - ./build:/var/www/react-app/build
+      - ./web/build:/var/www/react-app/build
     ports:
       - "80:80"
     command: nginx -g 'daemon off;'
