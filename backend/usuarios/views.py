@@ -25,7 +25,9 @@ class LoginView(APIView):
 
         if not user.check_password(password):
             raise AuthenticationFailed('Incorrect password!')
+        serializer = UserSerializer(user)
 
         return Response({
-            'message': 'Usuario logeado correctamente'
+            'message': 'Usuario logeado correctamente',
+            'user': serializer.data
         })

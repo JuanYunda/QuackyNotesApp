@@ -26,7 +26,7 @@ export default function Login() {
       const data = await response.json();
       if(response.status === 200){
         console.log(data);
-        navigate('/notes')
+        navigate('/notes', {state:{user: data.user}})
       }else{
         console.error(data)
       }
