@@ -7,8 +7,9 @@ function Notes() {
   console.log(location)
   return (
     <>
+    {user && (
       <p>Datos del usuario logeado: {`id: ${user.id}, nombre: ${user.nombre}, apellidos: ${user.apellidos}`}</p>
-
+    )}
       <ul>
       <li>Nota 1</li>
       <li>Nota 2</li>
