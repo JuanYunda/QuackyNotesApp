@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import NavBarClean from './NavBarClean';
+import { Box, Button, TextField } from '@mui/material';
 
 export default function Register() {
   const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
@@ -14,9 +16,9 @@ export default function Register() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
-      const response = await fetch(baseUrl+'register', {
+      const response = await fetch(baseUrl + 'register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -30,10 +32,10 @@ export default function Register() {
         })
       });
       const data = await response.json();
-      if(response.status === 200){
+      if (response.status === 200) {
         console.log(data);
         navigate('/login')
-      }else{
+      } else {
         console.error(data)
       }
 
@@ -41,56 +43,56 @@ export default function Register() {
       console.log(error);
     }
   };
-  
+
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Nombre:
-        <input
-          type="text"
+    <>
+      <NavBarClean></NavBarClean>
+      <Box
+        sx={{ display: 'grid', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+        <TextField
+          sx={{ width: '15rem' }}
+          id="nombre-registrarse"
+          label="Nombre"
           value={nombre}
           onChange={(event) => setNombre(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Apellidos:
-        <input
-          type="text"
+          variant="outlined" />
+        <TextField
+          sx={{ width: '15rem' }}
+          id="apellidos-registrarse"
+          label="Apellidos"
           value={apellidos}
           onChange={(event) => setApellidos(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Celular:
-        <input
-          type="text"
+          variant="outlined" />
+        <TextField
+          sx={{ width: '15rem' }}
+          id="celular-registrarse"
+          label="Celular"
           value={celular}
           onChange={(event) => setCelular(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Correo electrónico:
-        <input
-          type="email"
+          variant="outlined" />
+        <TextField
+          sx={{ width: '15rem' }}
+          id="email-registrarse"
+          label="Correo Electronico"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
-        />
-      </label>
-      <br />
-      <label>
-        Contraseña:
-        <input
-          type="password"
+          variant="outlined" />
+        <TextField
+          sx={{ width: '15rem' }}
+          id="contrasena-registrarse"
+          label="Contraseña"
+          type='password'
           value={password}
           onChange={(event) => setPassword(event.target.value)}
-        />
-      </label>
-      <br />
-      <button type="submit">Enviar</button>
-    </form>
+          variant="filled" />
+        <Button variant="contained" onClick={handleSubmit}>REGISTRARSE</Button>
+        <br></br>
+        <Button variant="text">
+          <Link to="/login">INICIAR SESION</Link>
+        </Button>
+
+      </Box>
+    </>
   );
 }
