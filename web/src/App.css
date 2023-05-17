@@ -36,3 +36,20 @@
     transform: rotate(360deg);
   }
 }
+
+.errorMsg{
+  display: block;
+  margin-top: -20px;
+
+}
+
+.errorMsg img{
+  width: 25px;
+  height: 25px;
+  padding: 3px;
+}
+
+.errorMsg p{
+  margin-top: -5px;
+  color: red; 
+}

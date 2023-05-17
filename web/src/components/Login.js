@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavBarClean from './NavBarClean'
 import { Box, Button, TextField } from '@mui/material';
+import errorIcon from "../icons/advertencia.png";
 
 export default function Login() {
   const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [errors, setErrors] = useState('');
   const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
@@ -30,13 +31,15 @@ export default function Login() {
         console.log(data);
         navigate('/notes', { state: { user: data.user } })
       } else {
-        console.error(data)
+        setErrors(data.detail)
       }
 
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   };
+
+
 
 
   return (
@@ -63,6 +66,12 @@ export default function Login() {
           onChange={(event) => setPassword(event.target.value)}
           variant="filled" />
         <br></br>
+        {errors && (
+                          <div className="errorMsg">
+                            <img src={errorIcon}></img>
+                             <p>{errors}</p>
+                          </div>
+                        )}
         <Button variant="contained" onClick={handleSubmit}>Iniciar sesión</Button>
         <br></br>
         <Button variant="text">
