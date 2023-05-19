@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='usuarios',
             name='password',
-            field=models.CharField(default='my_default_password', max_length=128),
+            field=models.CharField(default='Admin123*', max_length=128),
         ),
         migrations.AddField(
             model_name='usuarios',
