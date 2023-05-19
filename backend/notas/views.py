@@ -7,10 +7,9 @@ from .serializers import NotasSerializer
 class AllNotes(APIView):
     serializer_class = NotasSerializer
     
-    def get(self, request):
+    def post(self, request):
       id_usuario = request.data['id_usuario']
       user_notes = Notas.objects.filter(id_usuario=id_usuario)
       serializar = NotasSerializer(user_notes, many=True)
-      print("print",serializar)
 
       return Response(serializar.data)

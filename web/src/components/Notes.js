@@ -1,24 +1,70 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavBar from'./NavBar'
+import NavBar from './NavBar'
+import Nota from './Nota';
+import { Box } from '@mui/material';
 
-function Notes() {
+export default function Notes() {
   const location = useLocation();
   const user = location.state.user;
   console.log(location)
+  const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
+  const [notas, setNotas] = useState([])
+
+  useEffect(() => {
+    loadingNotes()
+  },[])
+
+  const loadingNotes = async (event) => {
+    // event.preventDefault();
+
+    try {
+      const response = await fetch(baseUrl + 'notes/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id_usuario: user.id
+        })
+      });
+      const data = await response.json();
+      setNotas(data)
+
+      if (response.status === 200) {
+        console.log(data);
+      } else {
+        console.log('error', data);
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
-    <NavBar></NavBar>
-    {user && (
-      <p>Datos del usuario logeado: {`id: ${user.id}, nombre: ${user.nombre}, apellidos: ${user.apellidos}`}</p>
-    )}
-      <ul>
-      <li>Nota 1</li>
-      <li>Nota 2</li>
-      <li>Nota 3</li>
-    </ul>
+      <NavBar></NavBar>
+      {user && (
+        <p>Datos del usuario logeado: {`id: ${user.id}, nombre: ${user.nombre}, apellidos: ${user.apellidos}`}</p>
+      )}
+      <Box
+      sx={{display:'flex'}}>
+        {
+          notas.map((n, index) => {
+            return (
+              <Nota key={n.titulo} nota={n}></Nota>
+            )
+          })
+        }
+      </Box>
+
+      {/* <ul>
+        <li>Nota 1</li>
+        <li>Nota 2</li>
+        <li>Nota 3</li>
+      </ul> */}
     </>
   );
 }
 
-export default Notes;
