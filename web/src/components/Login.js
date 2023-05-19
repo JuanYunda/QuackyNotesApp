@@ -12,9 +12,11 @@ export default function Login() {
   const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
+    
     event.preventDefault();
 
     try {
+      console.log(baseUrl)
       const response = await fetch(baseUrl + 'login', {
         method: 'POST',
         headers: {
@@ -38,9 +40,6 @@ export default function Login() {
       console.log(error)
     }
   };
-
-
-
 
   return (
     <>
