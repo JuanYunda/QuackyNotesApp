@@ -58,12 +58,6 @@ export default function Notes(props) {
           })
         }
       </Box>
-
-      {/* <ul>
-        <li>Nota 1</li>
-        <li>Nota 2</li>
-        <li>Nota 3</li>
-      </ul> */}
     </>
   );
 }
