@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import NavBarClean from './NavBarClean';
 import { Box, Button, TextField } from '@mui/material';
@@ -15,7 +15,6 @@ export default function Register() {
   const [errors, setErrors] = useState('');
 
   const navigate = useNavigate();
-
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,8 +38,8 @@ export default function Register() {
         console.log(data);
         navigate('/login');
       } else {
-        setErrors(data);
-        console.log(errors);
+        setErrors(data[0]);
+        console.log(data)
       }
     } catch (error) {
       console.log(error);
@@ -91,11 +90,11 @@ export default function Register() {
           variant="filled" />
         <br></br>
         {errors && (
-          <div className="errorMsg">
-          <img src={errorIcon} alt="Error Icon" />
-          <p>{errors}</p>
-          </div>
-        )}
+                          <div className="errorMsg">
+                            <img src={errorIcon}></img>
+                             <p>{errors}</p>
+                          </div>
+                        )}
         <Button variant="contained" onClick={handleSubmit}>REGISTRARSE</Button>
         <br></br>
         <Button variant="text">
