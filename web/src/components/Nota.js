@@ -7,12 +7,15 @@ import Typography from '@mui/material/Typography';
 
 export default function Nota(props) {
   return (
-    <Card sx={{ minWidth: 275, margin: '10px' }}>
+    <Card sx={{ minWidth: 275, margin: '10px' }} alt='nota'>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+        <Typography sx={{ fontSize: 14 }}
+        color="text.secondary"
+        gutterBottom
+        data-testid="titulo">
           {props.nota.titulo}
         </Typography>
-        <Typography variant="body2">
+        <Typography variant="body2" data-testid="descripcion">
           {props.nota.descripcion}
         </Typography>
       </CardContent>

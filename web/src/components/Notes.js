@@ -4,12 +4,12 @@ import NavBar from './NavBar'
 import Nota from './Nota';
 import { Box } from '@mui/material';
 
-export default function Notes() {
+export default function Notes(props) {
   const location = useLocation();
   const user = location.state.user;
   console.log(location)
   const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
-  const [notas, setNotas] = useState([])
+  const [notas, setNotas] = useState(props.data)
 
   useEffect(() => {
     loadingNotes()
@@ -29,9 +29,9 @@ export default function Notes() {
         })
       });
       const data = await response.json();
-      setNotas(data)
 
       if (response.status === 200) {
+        setNotas(data)
         console.log(data);
       } else {
         console.log('error', data);
@@ -44,7 +44,7 @@ export default function Notes() {
 
   return (
     <>
-      <NavBar></NavBar>
+      {/* <NavBar></NavBar> */}
       {user && (
         <p>Datos del usuario logeado: {`id: ${user.id}, nombre: ${user.nombre}, apellidos: ${user.apellidos}`}</p>
       )}
