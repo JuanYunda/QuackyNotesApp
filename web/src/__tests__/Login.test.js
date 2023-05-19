@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import Login from './Login';
+import Login from '../components/Login';
 import { MemoryRouter } from 'react-router-dom';
 
 describe('Login component', () => {

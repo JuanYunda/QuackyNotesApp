@@ -20,10 +20,15 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage watchAll",
+    "test": "react-scripts test --coverage",
     "coverage": "npm test --coverage",
     "eject": "react-scripts eject",
     "sonar": "sonar-scanner"
+  },
+  "jest":{
+    "collectCoverageFrom": [
+      "src"
+    ]
   },
   "eslintConfig": {
     "extends": [
