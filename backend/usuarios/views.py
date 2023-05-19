@@ -19,7 +19,7 @@ class RegisterView(APIView):
             raise ValidationError("Se requiere un nombre válido.")
         if apellidos == '':
             raise ValidationError("Se requieren apellidos válidos.")
-        if celular == '':
+        if celular == '' or len(celular) < 10 or not(char.isdigit() for char in celular):
             raise ValidationError("Se requiere un número de celular válido.")
         if not validate_email(username):
             raise ValidationError("Se requiere una dirección de correo electrónico válida.")
