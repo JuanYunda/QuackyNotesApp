@@ -107,6 +107,25 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
         source: web/build/
         target: /home/ubuntu/
+
+    - name: Copy backend files from main branch to remote host
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        source: backend
+        target: /home/ubuntu/
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+     
+
+    - name: Copy docker-compose.yml file from main branch to remote host
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        source: docker-compose.yml
+        target: /home/ubuntu/
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}                      
     
     # ======================================================
     # Once we have the new files synced to the staging server
