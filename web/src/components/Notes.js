@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavBar from './NavBar'
 import Nota from './Nota';
 import { Box } from '@mui/material';
 
@@ -16,8 +15,6 @@ export default function Notes(props) {
   },[])
 
   const loadingNotes = async (event) => {
-    // event.preventDefault();
-
     try {
       const response = await fetch(baseUrl + 'notes/', {
         method: 'POST',
@@ -44,7 +41,6 @@ export default function Notes(props) {
 
   return (
     <>
-      {/* <NavBar></NavBar> */}
       {user && (
         <p>Datos del usuario logeado: {`id: ${user.id}, nombre: ${user.nombre}, apellidos: ${user.apellidos}`}</p>
       )}
