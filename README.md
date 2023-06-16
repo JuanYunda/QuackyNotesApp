@@ -1,7 +1,7 @@
 #### Documentación del Repositorio
 Este repositorio contiene el código y los archivos necesarios para el pipeline de desarrollo, pruebas, despliegue y monitoreo de la aplicación. A continuación se detalla cómo funciona cada uno de estos procesos y cómo se ejecutan las pruebas, despliegues y notificaciones.
 
-Pipeline de CI
+### Pipeline de CI
 El pipeline de CI (Integración Continua) se ejecuta automáticamente cuando ocurre un evento de tipo pull request o de tipo push en el repositorio. Su objetivo es construir y probar la aplicación para garantizar la integridad del código. A continuación se explica el flujo de trabajo del pipeline de CI:
 
 Se detecta un evento de pull request o push en el repositorio.
@@ -35,4 +35,6 @@ Cuando se genera un plan de Terraform para el despliegue en producción.
 Cuando se ejecuta el comando terraform apply en el despliegue en producción.
 Cuando se destruyen los despliegues en pruebas y producción.
 Estas notificaciones se envían al canal de Slack designado y contienen información relevante sobre los eventos mencionados.
+
+
 
