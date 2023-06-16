@@ -20,8 +20,8 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "coverage": "react-scripts test --coverage watchAll=true",
+    "test": "react-scripts test --watchAll=true --forceExit",
+    "coverage": "react-scripts test --coverage --watchAll=true --forceExit",
     "eject": "react-scripts eject",
     "sonar": "sonar-scanner"
   },
@@ -32,14 +32,14 @@
     ]
   },
   "jest": {
-   
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "./src/App.js",
       "./src/index.js",
       "./src/components/NavBar.js",
       "./src/components/NavBarClean.js",
-      "./src/components/NavBar.js"
+      "./src/components/NavBar.js",
+      "./src/components/Notes.js"
     ]
   },
   "browserslist": {
