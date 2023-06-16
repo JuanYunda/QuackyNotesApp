@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+#### Documentación del Repositorio
+Este repositorio contiene el código y los archivos necesarios para el pipeline de desarrollo, pruebas, despliegue y monitoreo de la aplicación. A continuación se detalla cómo funciona cada uno de estos procesos y cómo se ejecutan las pruebas, despliegues y notificaciones.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Pipeline de CI
+El pipeline de CI (Integración Continua) se ejecuta automáticamente cuando ocurre un evento de tipo pull request o de tipo push en el repositorio. Su objetivo es construir y probar la aplicación para garantizar la integridad del código. A continuación se explica el flujo de trabajo del pipeline de CI:
 
-## Available Scripts
+Se detecta un evento de pull request o push en el repositorio.
+Se inicia el pipeline de CI.
+Se realiza la construcción de la aplicación.
+Se ejecutan las pruebas utilizando react-scripts y Jest.
+Se generan informes de pruebas y cobertura.
 
-In the project directory, you can run:
+### Despliegue de Pruebas
+El despliegue de pruebas se realiza mediante un evento workflow dispatch que recibe como entrada una pull request específica. Este despliegue se realiza en AWS, donde se crea una instancia de pruebas que refleja la rama solicitada en el pull request. A continuación se detalla el flujo de despliegue de pruebas:
 
-### `npm start`
+Se genera un evento workflow dispatch mediante una pull request específica.
+Se inicia el flujo de despliegue de pruebas.
+Se crea una instancia de pruebas en AWS.
+Se despliega la rama solicitada en la instancia de pruebas.
+Se notifica en Slack sobre el inicio y finalización del despliegue de pruebas.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Despliegue en Producción
+El despliegue en producción es similar al despliegue de pruebas, pero en este caso no se requiere un pull request específico, ya que se despliega directamente lo que se encuentra en la rama principal (main). A continuación se explica el flujo de despliegue en producción:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Se detecta un evento de push en la rama principal (main) del repositorio.
+Se inicia el flujo de despliegue en producción.
+Se crea una instancia en AWS para el entorno de producción.
+Se despliega la última versión de la rama principal en la instancia de producción.
+Se notifica en Slack sobre el inicio y finalización del despliegue en producción.
+Monitoreo y Notificaciones
+El monitoreo y las notificaciones se realizan a través de Slack. Se envían notificaciones en los siguientes eventos:
 
-### `npm test`
+Cuando se inicia un despliegue en producción.
+Cuando se genera un plan de Terraform para el despliegue en producción.
+Cuando se ejecuta el comando terraform apply en el despliegue en producción.
+Cuando se destruyen los despliegues en pruebas y producción.
+Estas notificaciones se envían al canal de Slack designado y contienen información relevante sobre los eventos mencionados.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

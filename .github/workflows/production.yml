@@ -9,7 +9,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./web
     
     runs-on: ubuntu-latest
     
@@ -93,9 +92,11 @@ jobs:
         ref: main
 
     - name: Install dependencies
+      working-directory: ./web
       run: npm install
 
     - name: Build static files
+      working-directory: ./web
       run: npm run build
 
     - name: Copy build files from main branch to remote host
@@ -106,6 +107,25 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
         source: web/build/
         target: /home/ubuntu/
+
+    - name: Copy backend files from main branch to remote host
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}
+        source: backend
+        target: /home/ubuntu/
+     
+
+    - name: Copy docker-compose.yml file from main branch to remote host
+      uses: appleboy/scp-action@master
+      with:
+        source: docker-compose.yml
+        target: /home/ubuntu/
+        host: ${{ steps.apply_output.outputs.stdout }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_PRODUCTION }}                      
     
     # ======================================================
     # Once we have the new files synced to the staging server
@@ -124,14 +144,9 @@ jobs:
             sleep 15
           done               
           echo "Docker daemon started. Waiting for additional 15 seconds..."
-          sleep 15
-          sudo docker run -it -d \
-          -e STAGING_RESOURCE_NAME=${{ steps.apply_output.outputs.stdout }} \
-          -v /home/ubuntu/web/build:/var/www/react-app/build \
-          -p 80:80 \
-          --name quackynoteapp \
-          gomaperrona/react-nginx
-          sudo docker exec quackynoteapp service nginx start        
+          sleep 30
+          sudo sed -i "s/DNS/${{ steps.apply_output.outputs.stdout }}/g" docker-compose.yml
+          sudo docker-compose up -d --build        
 
     - name: Notification Slack
       uses: rtCamp/action-slack-notify@v2

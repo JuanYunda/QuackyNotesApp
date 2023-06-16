@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import NavBar from './NavBar'
 import Nota from './Nota';
 import { Box } from '@mui/material';
 
 export default function Notes(props) {
   const location = useLocation();
   const user = location.state.user;
-  console.log(location)
   const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
+
   const [notas, setNotas] = useState(props.data)
 
   useEffect(() => {
@@ -16,8 +15,6 @@ export default function Notes(props) {
   },[])
 
   const loadingNotes = async (event) => {
-    // event.preventDefault();
-
     try {
       const response = await fetch(baseUrl + 'notes/', {
         method: 'POST',
@@ -44,20 +41,23 @@ export default function Notes(props) {
 
   return (
     <>
-      {/* <NavBar></NavBar> */}
       {user && (
         <p>Datos del usuario logeado: {`id: ${user.id}, nombre: ${user.nombre}, apellidos: ${user.apellidos}`}</p>
       )}
-      <Box
-      sx={{display:'flex'}}>
-        {
-          notas.map((n, index) => {
-            return (
-              <Nota key={n.titulo} nota={n}></Nota>
-            )
-          })
-        }
-      </Box>
+<Box sx={{display:'flex'}}>
+  {
+    notas ? (
+      notas.map((n, index) => {
+        return (
+          <Nota key={n.titulo} nota={n}></Nota>
+        )
+      })
+    ) : (
+      <p>Aún no hay notas</p>
+    )
+  }
+</Box>
+
     </>
   );
 }

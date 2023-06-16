@@ -55,7 +55,7 @@ class LoginView(APIView):
         if user is None:
             raise AuthenticationFailed('User not found!')
 
-        if not user.check_password(password):
+        if user.password != password:
             raise AuthenticationFailed('Incorrect password!')
         serializer = UserSerializer(user)
 
