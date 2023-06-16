@@ -5,7 +5,7 @@ import { Box, Button, TextField } from '@mui/material';
 import errorIcon from "../icons/advertencia.png";
 
 export default function Register() {
-  const baseUrl = 'http://127.0.0.1:8000/api/';
+  const baseUrl = window.location.protocol + "//" + window.location.hostname + ":8000/api/";
   const [nombre, setNombre] = useState('');
   const [apellidos, setApellidos] = useState('');
   const [celular, setCelular] = useState('');
