@@ -22,7 +22,7 @@
     "dev": "react-scripts start",
     "build": "cross-env CI=false react-scripts build",
     "test": "cross-env CI=false react-scripts test --forceExit",
-    "coverage": "cross-env CI=false react-scripts test --coverage --watchAll=true --forceExit",
+    "coverage": "cross-env CI=false react-scripts test --coverage --forceExit",
     "eject": "react-scripts eject",
     "sonar": "sonar-scanner"
   },
