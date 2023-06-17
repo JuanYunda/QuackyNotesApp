@@ -74,7 +74,7 @@ export default function Login() {
         <Button variant="contained" onClick={handleSubmit}>Iniciar sesión</Button>
         <br></br>
         <Button variant="text">
-          <Link to="/register">Registrarse</Link>
+          <Link to="/register">Crear cuenta</Link>
         </Button>
 
       </Box>
