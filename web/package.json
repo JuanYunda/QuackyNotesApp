@@ -21,8 +21,8 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "cross-env CI=false react-scripts build",
-    "test": "cross-env CI=false react-scripts test --forceExit",
-    "coverage": "cross-env CI=false react-scripts test --coverage --forceExit",
+    "test": "cross-env CI=false react-scripts test --detectOpenHandles",
+    "coverage": "cross-env CI=false react-scripts test --coverage --detectOpenHandles",
     "eject": "react-scripts eject",
     "sonar": "sonar-scanner"
   },
