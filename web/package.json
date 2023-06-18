@@ -38,7 +38,8 @@
       "./src/index.js",
       "./src/components/NavBar.js",
       "./src/components/NavBarClean.js",
-      "./src/components/Notes.js"
+      "./src/components/Notes.js",
+      "./src/components/Nota.js"
     ]
   },
   "browserslist": {
